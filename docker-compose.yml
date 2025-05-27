@@ -1,0 +1,39 @@
+services:
+  etlas-f:
+    ports:
+      - "3000:3000"
+    working_dir: /app
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./src:/app/src                    # Sincroniza carpeta src
+      - ./public:/app/public              # Sincroniza carpeta public
+      - ./package.json:/app/package.json  # Sincroniza package.json
+      - ./tailwind.config.ts:/app/tailwind.config.ts # Sincroniza tailwind.config.js
+      - ./README.md:/app/README.md            # Sincroniza README.md
+    develop:
+      watch:
+        - action: sync
+          path: ./src
+          target: /app/src
+        - action: sync
+          path: ./public
+          target: /app/public
+        - action: rebuild
+          path: package.json   
+    environment:
+      - SUPABASE_URL=${SUPABASE_URL}
+      - NEXT_PUBLIC_SUPABASE_URL=${NEXT_PUBLIC_SUPABASE_URL}
+      - SUPABASE_SERVICE_ROLE_KEY=${SUPABASE_SERVICE_ROLE_KEY}
+      - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
+      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
+      - NEXTAUTH_SECRET=${NEXTAUTH_SECRET}
+      - NEXTAUTH_URL=${NEXTAUTH_URL}
+      - SUPABASE_JWT_SECRET=${SUPABASE_JWT_SECRET}
+      - NEXT_PUBLIC_SUPABASE_ANON_KEY=${NEXT_PUBLIC_SUPABASE_ANON_KEY}
+      - ETLAS_API_URL=${ETLAS_API_URL}
+    env_file:
+      - .env
+    restart: unless-stopped    
+    
