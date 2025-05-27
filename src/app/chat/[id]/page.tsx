@@ -140,7 +140,7 @@ export default function ChatPage() {
 
       try {
         const res = await fetch(
-          `${process.env.NEXT_PUBLIC_ETLAS_API_URL}/messages`,
+          `${process.env.NEXT_PUBLIC_ETLAS_API_URL}/messages/`,
           {
             method: "POST",
             headers: {
@@ -226,7 +226,7 @@ export default function ChatPage() {
 
       try {
         const res = await fetch(
-          `${process.env.NEXT_PUBLIC_ETLAS_API_URL}/messages`,
+          `${process.env.NEXT_PUBLIC_ETLAS_API_URL}/messages/`,
           {
             method: "POST",
             headers: {

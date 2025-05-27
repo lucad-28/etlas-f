@@ -80,7 +80,7 @@ export default function Home() {
       setCreatingChat(true);
       try {
         const res = await fetch(
-          `${process.env.NEXT_PUBLIC_ETLAS_API_URL}/chats`,
+          `${process.env.NEXT_PUBLIC_ETLAS_API_URL}/chats/`,
           {
             method: "POST",
             headers: {
