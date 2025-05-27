@@ -23,14 +23,6 @@ const formSchema = z.object({
 type FormValues = z.infer<typeof formSchema>;
 
 export default function SchemesPage() {
-  const sample: Scheme = {
-    id: "1",
-    title: "Default Scheme",
-    content:
-      "CREATE TABLE autores (\n    autor_id INT PRIMARY KEY AUTO_INCREMENT,\n    nombre VARCHAR(50) NOT NULL,\n    apellido VARCHAR(50) NOT NULL,\n    fecha_nacimiento DATE,\n    nacionalidad VARCHAR(50)\n);\n-- Tabla de Categorías\nCREATE TABLE categorias (\n    categoria_id INT PRIMARY KEY AUTO_INCREMENT,\n    nombre VARCHAR(50) NOT NULL,\n    descripcion TEXT\n);\n-- Tabla de Libros\nCREATE TABLE libros (\n    libro_id INT PRIMARY KEY AUTO_INCREMENT,\n    titulo VARCHAR(100) NOT NULL,\n    autor_id INT,\n    categoria_id INT,\n    precio DECIMAL(10,2) NOT NULL,\n    stock INT NOT NULL DEFAULT 0,\n    fecha_publicacion DATE,\n    FOREIGN KEY (autor_id) REFERENCES autores(autor_id),\n    FOREIGN KEY (categoria_id) REFERENCES categorias(categoria_id)\n);\n-- Tabla de Clientes\nCREATE TABLE clientes (\n    cliente_id INT PRIMARY KEY AUTO_INCREMENT,\n    nombre VARCHAR(50) NOT NULL,\n    apellido VARCHAR(50) NOT NULL,\n    email VARCHAR(100) UNIQUE,\n    telefono VARCHAR(20),\n    fecha_registro DATE DEFAULT CURRENT_DATE\n);\n-- Tabla de Ventas\nCREATE TABLE ventas (\n    venta_id INT PRIMARY KEY AUTO_INCREMENT,\n    cliente_id INT,\n    fecha_venta DATETIME DEFAULT CURRENT_TIMESTAMP,\n    total DECIMAL(10,2) NOT NULL,\n    FOREIGN KEY (cliente_id) REFERENCES clientes(cliente_id)\n);\n-- Tabla de Detalles de Venta (tabla intermedia)\nCREATE TABLE detalle_ventas (\n    detalle_id INT PRIMARY KEY AUTO_INCREMENT,\n    venta_id INT,\n    libro_id INT,\n    cantidad INT NOT NULL,\n    precio_unitario DECIMAL(10,2) NOT NULL,\n    subtotal DECIMAL(10,2) NOT NULL,\n    FOREIGN KEY (venta_id) REFERENCES ventas(venta_id),\n    FOREIGN KEY (libro_id) REFERENCES libros(libro_id)\n);",
-    attachment_url: "https://example.com/attachment.png",
-    created_at: new Date(),
-  };
   const { data: session } = useSession();
   const [copied, setCopied] = useState(false);
   const [schemes, setSchemes] = useState<Scheme[]>([]);

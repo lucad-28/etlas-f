@@ -6,12 +6,7 @@ import { useState, useRef, useEffect } from "react";
 import { useParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import {
-  Upload,
-  SendHorizontal,
-  LoaderCircle,
-  SendHorizonal,
-} from "lucide-react";
+import { LoaderCircle, SendHorizonal } from "lucide-react";
 import { ChatMessage } from "@/components/chat-message";
 import { Message, MessageCreate, MultiMessage } from "@/types/models/message";
 import { useSession } from "next-auth/react";
@@ -36,10 +31,6 @@ export default function ChatPage() {
   const [processing, setProcessing] = useState(false);
   const router = useRouter();
 
-  if (!session) {
-    return null;
-  }
-
   useEffect(() => {
     // Simulate fetching chat history from an API
     const fetchChatHistory = async () => {
@@ -48,15 +39,18 @@ export default function ChatPage() {
         return;
       }
 
-      const res = await fetch(`${process.env.NEXT_PUBLIC_ETLAS_API_URL}/messages/by`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          chat_id: chatId,
-        }),
-      });
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_ETLAS_API_URL}/messages/by`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            chat_id: chatId,
+          }),
+        }
+      );
 
       try {
         if (!res.ok) {
@@ -85,15 +79,18 @@ export default function ChatPage() {
 
     const fetchSchemeChat = async () => {
       try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_ETLAS_API_URL}/schemes/by`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            chat_id: chatId,
-          }),
-        });
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_ETLAS_API_URL}/schemes/by`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              chat_id: chatId,
+            }),
+          }
+        );
         if (!res.ok) {
           console.error("Failed to fetch scheme chat");
           toastVariables.error("Failed to fetch scheme chat");
@@ -142,19 +139,22 @@ export default function ChatPage() {
       setProcessing(true);
 
       try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_ETLAS_API_URL}/messages`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            chat_id,
-            role: "user",
-            content: {
-              content: storeInput,
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_ETLAS_API_URL}/messages`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
             },
-          }),
-        });
+            body: JSON.stringify({
+              chat_id,
+              role: "user",
+              content: {
+                content: storeInput,
+              },
+            }),
+          }
+        );
         clearNewMessage();
 
         if (!res.ok) {
@@ -196,6 +196,10 @@ export default function ChatPage() {
     scrollToBottom();
   }, [messages]);
 
+  if (!session) {
+    return null;
+  }
+  
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (input.trim()) {
@@ -221,13 +225,16 @@ export default function ChatPage() {
       setInput("");
 
       try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_ETLAS_API_URL}/messages`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(newMessage),
-        });
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_ETLAS_API_URL}/messages`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(newMessage),
+          }
+        );
 
         if (!res.ok) {
           throw new Error("Failed to send message");

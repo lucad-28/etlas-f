@@ -31,24 +31,27 @@ export default function Home() {
   const setNewMessage = useCreateMessage((state) => state.setNewMessage);
   const router = useRouter();
 
-  if (!session) {
-    return null;
-  }
-
   // Fetch schemes on component mount
   useEffect(() => {
     const fetchSchemes = async () => {
+      if (!session) {
+        console.warn("No session found, skipping scheme fetch");
+        return;
+      }
       try {
         setFetchingSchemes(true);
-        const res = await fetch(`${process.env.NEXT_PUBLIC_ETLAS_API_URL}/schemes/by`, {
-          headers: {
-            "Content-Type": "application/json",
-          },
-          method: "POST",
-          body: JSON.stringify({
-            user_id: session.user.id,
-          }),
-        });
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_ETLAS_API_URL}/schemes/by`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+            method: "POST",
+            body: JSON.stringify({
+              user_id: session.user.id,
+            }),
+          }
+        );
 
         if (!res.ok) {
           console.error("Failed to fetch schemes");
@@ -67,22 +70,28 @@ export default function Home() {
     fetchSchemes();
   }, []);
 
+  if (!session) {
+    return null;
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (message.trim()) {
       setCreatingChat(true);
       try {
-
-        const res = await fetch(`${process.env.NEXT_PUBLIC_ETLAS_API_URL}/chats`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            scheme_id: scheme === "" ? null : scheme,
-            user_id: session.user.id,
-          }),
-        });
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_ETLAS_API_URL}/chats`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              scheme_id: scheme === "" ? null : scheme,
+              user_id: session.user.id,
+            }),
+          }
+        );
 
         if (!res.ok) {
           throw new Error("Failed to create chat");

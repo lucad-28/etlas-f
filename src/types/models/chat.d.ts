@@ -4,7 +4,7 @@ export interface Chat {
   created_at: Date;
 }
 
-export interface ChatCreate extends Pick<Chat, "name_chat"> {}
+export type ChatCreate = Pick<Chat, "name_chat">
 
 export interface ChatUpdate extends Partial<Pick<ChatCreate, "name_chat">> {
   id: string;

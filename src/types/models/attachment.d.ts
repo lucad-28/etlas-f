@@ -4,8 +4,7 @@ export interface Attachment {
   filename: string;
   created_at: Date;
 }
-export interface AttachmentCreate
-  extends Pick<Attachment, "url" | "filename"> {}
+export type AttachmentCreate = Pick<Attachment, "url" | "filename">
 export interface AttachmentUpdate extends Partial<AttachmentCreate> {
   id: string;
 }
